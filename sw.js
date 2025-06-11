@@ -5,6 +5,7 @@ self.addEventListener("install", async event => {
 
   // Menyimpan seluruh aset
   cache.addAll([
+    "/",
     "app.js",
     "index.html" ,
     "daftar.html",
