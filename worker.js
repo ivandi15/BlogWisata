@@ -1,9 +1,9 @@
-// Untuk tahap instalasi service worker
+// Menambahkan event listener untuk proses instalasi Service Worker
 self.addEventListener("install", async event => {
-  // Membuka (atau membuat) cache bernama "pwa-assets"
-  const cache = await caches.open("pwa-assets");
+  // Membuka (atau membuat jika belum ada) cache dengan nama "pwa-BlogWisata"
+  const cache = await caches.open("pwa-BlogWisata");
 
-  // Menyimpan seluruh aset
+  // Menambahkan semua file berikut ke dalam cache agar dapat digunakan secara offline
   cache.addAll([
     "app.js",
     "index.html" ,
@@ -31,13 +31,13 @@ self.addEventListener("install", async event => {
   ]); 
 });
  
-// Untuk menangani semua permintaan jaringan (fetch)
+// Menambahkan event listener untuk menangani semua permintaan fetch dari aplikasi
 self.addEventListener("fetch", event => {
+  // Menangani permintaan fetch dengan mencoba mencocokkan dari cache terlebih dahulu
   event.respondWith(
-    // Mencocokkan permintaan dengan aset yang sudah disimpan
     caches.match(event.request).then(cachedResponse => {
-      // Jika ditemukan di cache, maka ambil dari cache
-      // Jika tidak ditemukan, ambil dari jaringan (fetch online)
+      // Jika ditemukan di cache, gunakan versi cache
+      // Jika tidak, lakukan fetch dari jaringan
       return cachedResponse || fetch(event.request);
     })
   )
